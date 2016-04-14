@@ -1,0 +1,10 @@
+{
+  "watchOptions": {
+    "ignored": [
+      "node_modules",
+      "*.ts",
+      "*.js.map",
+      "*.scss"
+    ]
+  }
+}
