@@ -1,13 +1,11 @@
 import { Injectable, OnInit } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
-import { Util } from '../service/util';
 import { DraftsService } from '../service/drafts';
 
 @Injectable()
 export class DraftsActions {
   constructor(
     private dispatcher: Dispatcher,
-    private util: Util,
     private draftsService: DraftsService
   ) {}
 

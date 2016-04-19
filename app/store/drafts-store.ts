@@ -34,8 +34,7 @@ export class DraftsStore {
   }
 
   addDraft(action, state) {
-    console.log(action)
-    return [...state, { id: action.data.id, text: action.data.text }];
+    return [{ id: action.data.id, text: action.data.text }, ...state];
   }
 
   receiveDrafts(action, state) {

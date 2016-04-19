@@ -1,13 +1,9 @@
 import { Injectable, Inject } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
-import { Util } from '../service/util';
 
 @Injectable()
 export class StorageActions {
-  constructor(
-    private util: Util,
-    private dispatcher: Dispatcher
-  ) {}
+  constructor(private dispatcher: Dispatcher) {}
 
   draftsSaved(draftsSaved$) {
     const draftsSavedActions$ = draftsSaved$

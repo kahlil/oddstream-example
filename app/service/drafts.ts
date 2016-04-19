@@ -26,7 +26,7 @@ export class DraftsService {
       if (currentIndex !== -1) {
         drafts[currentIndex] = draft;
       } else {
-        drafts.push(draft);
+        drafts.unshift(draft);
       }
       this.storageActions.draftsSaved(Observable.fromPromise(
         this.storage.setItem(`drafts`, drafts)
