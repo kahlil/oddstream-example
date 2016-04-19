@@ -34,13 +34,13 @@ export class DraftsService {
     })
   }
 
-  // heartDraft(id: number) {
-  //   this.storage.getItem('drafts').then((drafts) => {
-  //     const currentIndex = findIndex(drafts, ['id', id]);
-  //     drafts[currentIndex].hearted = !drafts[currentIndex].hearted;
-  //     this.storage.setItem(`drafts`, drafts)
-  //   })
-  // }
+  heartDraft(id: number) {
+    this.storage.getItem('drafts').then((drafts) => {
+      const currentIndex = findIndex(drafts, ['id', id]);
+      drafts[currentIndex].hearted = !drafts[currentIndex].hearted;
+      this.storage.setItem(`drafts`, drafts)
+    })
+  }
 
   getDrafts() {
     this.storageActions.receiveDrafts(Observable
