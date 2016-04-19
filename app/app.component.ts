@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { DraftsListComponent } from './drafts-list.component';
 import { DraftEditorComponent } from './draft-editor.component';
 // Services
-import { DraftsService } from './service/drafts.service';
+import { DraftsService } from './service/drafts';
 // Factories
 import { Util } from './service/util';
 // Flux
@@ -14,6 +14,7 @@ import { Dispatcher } from './dispatcher/dispatcher';
 import { DraftsActions } from './action/drafts-actions';
 import { StorageActions } from './action/storage-actions';
 import { DraftsStore } from './store/drafts-store';
+import { DraftsEditorStore } from './store/drafts-editor-store';
 // Libs
 import localforage from 'localforage';
 import _ from 'lodash';
@@ -29,42 +30,48 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/publishReplay';
+import 'rxjs/add/operator/combineLatest';
 // Rx observable methods
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/never';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/fromArray';
+import 'rxjs/add/observable/fromPromise';
 
 @Component({
   selector: 'tinydraft-app',
   template: `
+		<draft-editor></draft-editor>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>TinyDraft</h1>
+          <h1 class="title">tinydraft</h1>
           <router-outlet></router-outlet>
         </div>
       </div>
     </div>
   `,
-  directives: [ROUTER_DIRECTIVES],
+	styles: [`
+		.title {
+			text-align: center;
+			margin-top: 2rem;
+			padding-bottom: 1rem;
+		}
+	`],
+  directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
-    // provide('LocalForage', { useValue: localforage }),
+    provide('LocalForage', { useValue: localforage }),
     Util,
     DraftsService,
     Dispatcher,
     DraftsActions,
-    // StorageActions,
+    StorageActions,
     DraftsStore,
+    DraftsEditorStore,
     ROUTER_PROVIDERS,
   ]
 })
-@RouteConfig([
-  { path: '/', component: DraftsListComponent, name: 'DraftsList' },
-  // { path: '/draft/:id', component: DraftDetailComponent, name: 'DraftsDetail' },
-  { path: '/new', component: DraftEditorComponent, name: 'NewDraft' },
-  { path: '/draft/:id/edit', component: DraftEditorComponent, name: 'EditDraft' }
-])
+@RouteConfig([{ path: '/', component: DraftsListComponent, name: 'DraftsList' }])
 export class AppComponent implements OnInit {
   constructor(
     private draftsStore: DraftsStore,
@@ -72,12 +79,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.draftsStore.state$.subscribe(x => console.log(x))
-    setTimeout(() => {
-      this.draftsActions.receiveDrafts(Observable.fromArray([[
-        {id: 0, text: 'blabla'},
-        {id:1, text: 'schubdibu'}
-      ]]));
-    }, 0)
+		this.draftsActions.getDrafts(Observable.of(['GET_DRAFTS']));
   }
 }

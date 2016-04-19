@@ -1,17 +1,21 @@
 import { Injectable } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
+import { DraftsStore } from './drafts-store';
 import { Observable } from 'rxjs/Observable';
 import { curry, camelCase, last } from 'lodash';
 
 @Injectable()
-export class DraftsStore {
+export class DraftsEditorStore {
   public state$: Observable<Object>;
 
-  constructor(private dispatcher: Dispatcher) {
-    this.state$ = this.processActions(this.dispatcher.dispatcher$);
+  constructor(
+    private dispatcher: Dispatcher,
+    private draftsStore: DraftsStore
+  ) {
+    this.state$ = this.processActions(dispatcher.dispatcher$, draftsStore.state$);
   }
 
-  processActions(dispatcher$) {
+  processActions(dispatcher$, drafts$) {
     // In the .map-step we also want to partially apply the action
     // parameter. That's why the reducer function is being curried.
     const curriedReducer = actionType => curry(this[camelCase(actionType)]);
@@ -25,44 +29,28 @@ export class DraftsStore {
       .map(action => curriedReducer(action.type)(action))
       // We now have a stream of reducers.
       // Apply them on the state as they come through.
-      .scan((state, reducer) => reducer(state), [])
+      .scan((state, reducer) => reducer(state), { isDisabled: true })
+			.combineLatest(drafts$, (editorState, drafts) => {
+				const highestId = drafts.reduce((acc, draft) => {
+					if (draft.id > acc) {
+						return draft.id
+					} else {
+						return acc;
+					}
+				}, -1);
+
+				editorState.newId = highestId + 1;
+
+				return editorState;
+			})
       .publishReplay(1).refCount();
   }
 
-  deleteDraft(action, state) {
-    return state.filter(draft => draft.id !== action.data)
+  openEditor(action, state) {
+    return { isEnsabled: true }
   }
 
   addDraft(action, state) {
-		console.log(action)
-    return [...state, { id: action.data.id, text: action.data.text }];
+    return { isEnsabled: false }
   }
-
-  receiveDrafts(action, state) {
-    return [...action.data];
-  }
-
-	draftsSaved(action, state) {
-		return state;
-	}
-
-	heartDraft(action, state) {
-		return state
-			.map(draft => {
-				if (draft.id === action.data) {
-					draft.hearted = !draft.hearted;
-				}
-				return draft;
-			});
-	}
-
-	filterHearted(action, state) {
-		return state
-			.map(draft => {
-				if (!draft.hearted) {
-					draft.hide = !draft.hide;
-				}
-				return draft;
-			});
-	}
 }

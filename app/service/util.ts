@@ -1,17 +1,27 @@
 import { Injectable } from 'angular2/core';
-import { snakeCase, upperCase } from 'lodash';
+import { snakeCase } from 'lodash';
 import { Dispatcher } from '../dispatcher/dispatcher'
 
 @Injectable()
 export class Util {
-  makeActionCreator(actionName: string, dispatcher: Dispatcher) {
+	constructor(private dispatcher: Dispatcher) {}
+
+  makeActionCreator(actionName: string, sideEffect?: any) {
     return (stream) => {
-      dispatcher.dispatch(
-        stream.map(data => ({
-          type: upperCase(snakeCase(actionName)),
-          data
-        }))
-      );
+			const action$ = stream
+				.map(data => {
+					// CONVENTION: only action creators are allowed
+					// to trigger side effects.
+					if (typeof sideEffect === 'function') {
+						sideEffect(data);
+					}
+					return {
+						type: snakeCase(actionName).toUpperCase(),
+						data
+					}
+				});
+
+      this.dispatcher.dispatch(action$);
     }
   }
 }

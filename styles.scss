@@ -1,1 +1,15 @@
 @import 'bootstrap';
+
+body {
+	font-family: 'Source Code Pro', sans-serif;
+}
+
+button {
+	border: none;
+	background: none;
+	text-decoration: underline;
+
+	&:hover {
+		text-decoration: none;
+	}
+}

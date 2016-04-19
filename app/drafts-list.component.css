@@ -1,0 +1,44 @@
+.flex-container {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+}
+.flex-item {
+	flex-basis: 20%;
+}
+.draft {
+	margin-top: 1rem;
+	padding: 15px 10px 10px 10px;
+	border: 1px solid #ccc;
+	margin-right: 1rem;
+	position: relative;
+}
+.delete-draft {
+	position: absolute;
+	top: -2px;
+	right: 5px;
+	cursor: pointer;
+}
+.menu {
+	text-align: center;
+}
+.draft-id {
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	font-size: .7rem;
+	color: #ccc
+}
+.heart {
+	cursor: pointer;
+	color: whitesmoke;
+	position: absolute;
+	bottom: -2px;
+	right: 3px;
+}
+.hearted {
+	color: coral;
+}
+.hide {
+	display: none;
+}

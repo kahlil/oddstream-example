@@ -14,7 +14,7 @@ export class Dispatcher {
     action$.subscribe(
       res => this.dispatcher$.next(res),
       error => console.error('🔥', error),
-      () => console.log('done')
+      () => console.log('a completed event has been sent')
     );
   }
 }

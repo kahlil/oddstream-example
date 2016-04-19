@@ -11,7 +11,17 @@ export class StorageActions {
     private util: Util,
     private dispatcher: Dispatcher
   ) {
-    // this.draftsSaved = util.makeActionCreator('draftsSaved', dispatcher);
-    // this.draftsReceived = util.makeActionCreator('draftsReceived', dispatcher);
+    this.draftsSaved = util.makeActionCreator('draftsSaved');
+    // this.draftsReceived = util.makeActionCreator('draftsReceived');
+  }
+
+	receiveDrafts(receiveDrafts$) {
+    const receiveDraftsActions$ = receiveDrafts$
+      .map(drafts => ({
+        type: 'RECEIVE_DRAFTS',
+        data: drafts
+      }));
+
+    this.dispatcher.dispatch(receiveDraftsActions$);
   }
 }

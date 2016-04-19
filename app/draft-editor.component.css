@@ -1,0 +1,24 @@
+:host {
+	position: absolute;
+	top: 5rem;
+	left: 0;
+	background: white;
+	width: 100%;
+	z-index: 1;
+}
+.hidden {
+	display: none;
+}
+.enabled {
+	display: block;
+}
+.draft-editor {
+	padding-top: 3rem;
+	text-align: center;
+}
+textarea {
+	background: white;
+}
+.add-draft-button {
+	display: inline-block;
+}

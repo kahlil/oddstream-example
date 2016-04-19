@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Scheduler } from 'rxjs/Rx';
 // Flux Services
-import { DraftsService } from './service/drafts.service';
+import { DraftsService } from './service/drafts';
 import { DraftsStore } from './store/drafts-store';
 import { DraftsActions } from './action/drafts-actions';
 // Components
@@ -13,16 +13,20 @@ import { DraftEditorComponent } from './draft-editor.component';
 @Component({
   selector: 'drafts-list',
   template: `
-    <p>List</p>
-    <draft-editor></draft-editor>
-    <ul class="collection">
-      <li *ngFor="#draft of drafts | async">
-        Draft ID: {{draft?.id}}<br>
-        Draft Text: {{draft?.text}} <span (click)="deleteDraft$.next(draft.id)">x</span>
-      </li>
-    </ul>
-    <button (click)="openEditor.next()">Open Editor</button>
+		<div class="menu">
+			<button (click)="openEditor$.next()">add draft</button>
+			<button (click)="filterHearted$.next()">show hearted</button>
+		</div>
+    <div class="flex-container">
+	      <div *ngFor="#draft of drafts | async" class="draft flex-item" [ngClass]="{ hide: draft?.hide }">
+					<span class="delete-draft" (click)="deleteDraft$.next(draft.id)">&times;</span>
+	        <span class="draft-id">{{draft?.id}}</span>
+					<span class="heart" [ngClass]="{ hearted: draft?.hearted }" (click)="heartDraft$.next(draft.id)">&hearts;</span>
+	        {{draft?.text}}
+	      </div>
+    </div>
   `,
+	styleUrls: ['app/drafts-list.component.css'],
   directives: [
     DraftEditorComponent,
     ROUTER_DIRECTIVES
@@ -31,8 +35,10 @@ import { DraftEditorComponent } from './draft-editor.component';
 export class DraftsListComponent implements OnInit {
   public drafts: any;
 
-  @Output() deleteDraft$ = new EventEmitter();
-  @Output() openEditor = new EventEmitter();
+  deleteDraft$ = new EventEmitter();
+  openEditor$ = new EventEmitter();
+  heartDraft$ = new EventEmitter();
+  filterHearted$ = new EventEmitter();
 
   constructor(
     private draftsService: DraftsService,
@@ -46,6 +52,13 @@ export class DraftsListComponent implements OnInit {
 
     // Create delete draft action by passing the
     // deleteDraft clickstream.
-    this.draftsActions.deleteDraft(this.deleteDraft$);
+		this.draftsActions.deleteDraft(this.deleteDraft$);
+		// Create an open editor action by passing
+		// the openEditor clickstream.
+		this.draftsActions.openEditor(this.openEditor$);
+		// The hearting clickstream.
+		this.draftsActions.heartDraft(this.heartDraft$)
+		// The filter hearted drafts click stream.
+		this.draftsActions.filterHearted(this.filterHearted$)
   }
 }
