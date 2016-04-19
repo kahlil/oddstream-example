@@ -33,18 +33,18 @@ export class DraftsActions {
     this.dispatcher.dispatch(deleteDraftAction$);
   }
 
-  heartDraft(heartDraft$) {
-    const heartDraftAction$ = heartDraft$.map(id => {
-      // FIRE SIDE EFFECT!
-      this.draftsService.heartDraft(id);
-      return {
-        type: 'HEART_DRAFT',
-        data: id
-      }
-    });
-
-    this.dispatcher.dispatch(heartDraftAction$);
-  }
+  // heartDraft(heartDraft$) {
+  //   const heartDraftAction$ = heartDraft$.map(id => {
+  //     // FIRE SIDE EFFECT!
+  //     this.draftsService.heartDraft(id);
+  //     return {
+  //       type: 'HEART_DRAFT',
+  //       data: id
+  //     }
+  //   });
+  //
+  //   this.dispatcher.dispatch(heartDraftAction$);
+  // }
 
   addDraft(addDraft$) {
     const addDraftAction$ = addDraft$.map(draft => {
@@ -83,9 +83,9 @@ export class DraftsActions {
     this.dispatcher.dispatch(receiveDraftsActions$);
   }
 
-  filterHearted(filterHearted$) {
-    this.dispatcher.dispatch(filterHearted$
-      .map(() => ({ type: 'FILTER_HEARTED' }))
-    );
-  }
+  // filterHearted(filterHearted$) {
+  //   this.dispatcher.dispatch(filterHearted$
+  //     .map(() => ({ type: 'FILTER_HEARTED' }))
+  //   );
+  // }
 }

@@ -15,13 +15,13 @@ import { DraftEditorComponent } from './draft-editor.component';
   template: `
     <div class="menu">
       <button (click)="openEditor$.next()">add draft</button>
-      <button (click)="filterHearted$.next()">show hearted</button>
+      <!--<button (click)="filterHearted$.next()">show hearted</button>-->
     </div>
     <div class="flex-container">
         <div *ngFor="#draft of drafts | async" class="draft flex-item" [ngClass]="{ hide: draft?.hide }">
           <span class="delete-draft" (click)="deleteDraft$.next(draft.id)">&times;</span>
           <span class="draft-id">{{draft?.id}}</span>
-          <span class="heart" [ngClass]="{ hearted: draft?.hearted }" (click)="heartDraft$.next(draft.id)">&hearts;</span>
+          <!--<span class="heart" [ngClass]="{ hearted: draft?.hearted }" (click)="heartDraft$.next(draft.id)">&hearts;</span>-->
           {{draft?.text}}
         </div>
     </div>
@@ -36,11 +36,10 @@ export class DraftsListComponent implements OnInit {
   public drafts: any;
   deleteDraft$ = new EventEmitter();
   openEditor$ = new EventEmitter();
-  heartDraft$ = new EventEmitter();
-  filterHearted$ = new EventEmitter();
+  // heartDraft$ = new EventEmitter();
+  // filterHearted$ = new EventEmitter();
 
   constructor(
-    private draftsService: DraftsService,
     private draftsActions: DraftsActions,
     public draftsStore: DraftsStore
   ) {}
@@ -55,8 +54,8 @@ export class DraftsListComponent implements OnInit {
     // the openEditor clickstream.
     this.draftsActions.openEditor(this.openEditor$);
     // The hearting clickstream.
-    this.draftsActions.heartDraft(this.heartDraft$)
+    // this.draftsActions.heartDraft(this.heartDraft$)
     // The filter hearted drafts click stream.
-    this.draftsActions.filterHearted(this.filterHearted$)
+    // this.draftsActions.filterHearted(this.filterHearted$)
   }
 }

@@ -45,23 +45,23 @@ export class DraftsStore {
     return state;
   }
 
-  heartDraft(action, state) {
-    return state
-      .map(draft => {
-        if (draft.id === action.data) {
-          draft.hearted = !draft.hearted;
-        }
-        return draft;
-      });
-  }
+  // heartDraft(action, state) {
+  //   return state
+  //     .map(draft => {
+  //       if (draft.id === action.data) {
+  //         draft.hearted = !draft.hearted;
+  //       }
+  //       return draft;
+  //     });
+  // }
 
-  filterHearted(action, state) {
-    return state
-      .map(draft => {
-        if (!draft.hearted) {
-          draft.hide = !draft.hide;
-        }
-        return draft;
-      });
-  }
+  // filterHearted(action, state) {
+  //   return state
+  //     .map(draft => {
+  //       if (!draft.hearted) {
+  //         draft.hide = !draft.hide;
+  //       }
+  //       return draft;
+  //     });
+  // }
 }
