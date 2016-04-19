@@ -34,7 +34,7 @@ export class DraftsStore {
   }
 
   addDraft(action, state) {
-		console.log(action)
+    console.log(action)
     return [...state, { id: action.data.id, text: action.data.text }];
   }
 
@@ -42,27 +42,27 @@ export class DraftsStore {
     return [...action.data];
   }
 
-	draftsSaved(action, state) {
-		return state;
-	}
+  draftsSaved(action, state) {
+    return state;
+  }
 
-	heartDraft(action, state) {
-		return state
-			.map(draft => {
-				if (draft.id === action.data) {
-					draft.hearted = !draft.hearted;
-				}
-				return draft;
-			});
-	}
+  heartDraft(action, state) {
+    return state
+      .map(draft => {
+        if (draft.id === action.data) {
+          draft.hearted = !draft.hearted;
+        }
+        return draft;
+      });
+  }
 
-	filterHearted(action, state) {
-		return state
-			.map(draft => {
-				if (!draft.hearted) {
-					draft.hide = !draft.hide;
-				}
-				return draft;
-			});
-	}
+  filterHearted(action, state) {
+    return state
+      .map(draft => {
+        if (!draft.hearted) {
+          draft.hide = !draft.hide;
+        }
+        return draft;
+      });
+  }
 }

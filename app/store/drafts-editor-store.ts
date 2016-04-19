@@ -30,19 +30,19 @@ export class DraftsEditorStore {
       // We now have a stream of reducers.
       // Apply them on the state as they come through.
       .scan((state, reducer) => reducer(state), { isDisabled: true })
-			.combineLatest(drafts$, (editorState, drafts) => {
-				const highestId = drafts.reduce((acc, draft) => {
-					if (draft.id > acc) {
-						return draft.id
-					} else {
-						return acc;
-					}
-				}, -1);
+      .combineLatest(drafts$, (editorState, drafts) => {
+        const highestId = drafts.reduce((acc, draft) => {
+          if (draft.id > acc) {
+            return draft.id
+          } else {
+            return acc;
+          }
+        }, -1);
 
-				editorState.newId = highestId + 1;
+        editorState.newId = highestId + 1;
 
-				return editorState;
-			})
+        return editorState;
+      })
       .publishReplay(1).refCount();
   }
 

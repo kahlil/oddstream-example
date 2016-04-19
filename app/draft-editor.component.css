@@ -1,24 +1,24 @@
 :host {
-	position: absolute;
-	top: 5rem;
-	left: 0;
-	background: white;
-	width: 100%;
-	z-index: 1;
+  position: absolute;
+  top: 5rem;
+  left: 0;
+  background: white;
+  width: 100%;
+  z-index: 1;
 }
 .hidden {
-	display: none;
+  display: none;
 }
 .enabled {
-	display: block;
+  display: block;
 }
 .draft-editor {
-	padding-top: 3rem;
-	text-align: center;
+  padding-top: 3rem;
+  text-align: center;
 }
 textarea {
-	background: white;
+  background: white;
 }
 .add-draft-button {
-	display: inline-block;
+  display: inline-block;
 }

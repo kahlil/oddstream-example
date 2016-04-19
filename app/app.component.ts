@@ -41,7 +41,7 @@ import 'rxjs/add/observable/fromPromise';
 @Component({
   selector: 'tinydraft-app',
   template: `
-		<draft-editor></draft-editor>
+    <draft-editor></draft-editor>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -51,13 +51,13 @@ import 'rxjs/add/observable/fromPromise';
       </div>
     </div>
   `,
-	styles: [`
-		.title {
-			text-align: center;
-			margin-top: 2rem;
-			padding-bottom: 1rem;
-		}
-	`],
+  styles: [`
+    .title {
+      text-align: center;
+      margin-top: 2rem;
+      padding-bottom: 1rem;
+    }
+  `],
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
@@ -79,6 +79,6 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-		this.draftsActions.getDrafts(Observable.of(['GET_DRAFTS']));
+    this.draftsActions.getDrafts(Observable.of(['GET_DRAFTS']));
   }
 }

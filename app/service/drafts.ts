@@ -11,49 +11,49 @@ export class DraftsService {
     private storageActions: StorageActions
   ) {}
 
-	deleteDraft(id: any) {
-		this.storage.getItem('drafts').then((drafts) => {
-			const newDrafts = drafts.filter(d => d.id !== id);
-			this.storageActions.draftsSaved(Observable.fromPromise(
-				this.storage.setItem(`drafts`, newDrafts)
-			));
-		})
+  deleteDraft(id: any) {
+    this.storage.getItem('drafts').then((drafts) => {
+      const newDrafts = drafts.filter(d => d.id !== id);
+      this.storageActions.draftsSaved(Observable.fromPromise(
+        this.storage.setItem(`drafts`, newDrafts)
+      ));
+    })
   }
 
   saveDraft(draft: any) {
-		this.storage.getItem('drafts').then((drafts) => {
-			if (!drafts) drafts = [];
+    this.storage.getItem('drafts').then((drafts) => {
+      if (!drafts) drafts = [];
 
-			const currentIndex = findIndex(drafts, ['id', draft.id]);
+      const currentIndex = findIndex(drafts, ['id', draft.id]);
 
-			if (currentIndex !== -1) {
-				drafts[currentIndex] = draft;
-			} else {
-				drafts.push(draft);
-			}
+      if (currentIndex !== -1) {
+        drafts[currentIndex] = draft;
+      } else {
+        drafts.push(draft);
+      }
 
-			this.storageActions.draftsSaved(Observable.fromPromise(
-				this.storage.setItem(`drafts`, drafts)
-			));
-		})
+      this.storageActions.draftsSaved(Observable.fromPromise(
+        this.storage.setItem(`drafts`, drafts)
+      ));
+    })
   }
 
-	heartDraft(id: number) {
-		this.storage.getItem('drafts').then((drafts) => {
-			const currentIndex = findIndex(drafts, ['id', id]);
+  heartDraft(id: number) {
+    this.storage.getItem('drafts').then((drafts) => {
+      const currentIndex = findIndex(drafts, ['id', id]);
 
-			drafts[currentIndex].hearted = !drafts[currentIndex].hearted;
+      drafts[currentIndex].hearted = !drafts[currentIndex].hearted;
 
-			this.storageActions.draftsSaved(Observable.fromPromise(
-				this.storage.setItem(`drafts`, drafts)
-			));
-		})
-	}
+      this.storageActions.draftsSaved(Observable.fromPromise(
+        this.storage.setItem(`drafts`, drafts)
+      ));
+    })
+  }
 
   getDrafts() {
     this.storageActions.receiveDrafts(Observable
-			.fromPromise(this.storage.getItem('drafts'))
-			.map(result => result === null ? [] : result)
-		);
+      .fromPromise(this.storage.getItem('drafts'))
+      .map(result => result === null ? [] : result)
+    );
   }
 }

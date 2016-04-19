@@ -15,7 +15,7 @@ export class StorageActions {
     // this.draftsReceived = util.makeActionCreator('draftsReceived');
   }
 
-	receiveDrafts(receiveDrafts$) {
+  receiveDrafts(receiveDrafts$) {
     const receiveDraftsActions$ = receiveDrafts$
       .map(drafts => ({
         type: 'RECEIVE_DRAFTS',

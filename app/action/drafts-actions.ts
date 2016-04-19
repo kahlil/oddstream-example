@@ -8,15 +8,15 @@ export class DraftsActions {
   constructor(
     private dispatcher: Dispatcher,
     private util: Util,
-		private draftsService: DraftsService
+    private draftsService: DraftsService
   ) {}
 
-	openEditor(openEditor$) {
+  openEditor(openEditor$) {
     const openEditorAction$ = openEditor$
       .map((data) => ({
-      	type: 'DELETE_DRAFT',
-      	data
-    	}));
+        type: 'DELETE_DRAFT',
+        data
+      }));
 
     this.dispatcher.dispatch(openEditorAction$);
   }
@@ -24,53 +24,53 @@ export class DraftsActions {
   deleteDraft(deleteDraft$) {
     const deleteDraftAction$ = deleteDraft$
       .map((id) => {
-				// FIRE SIDE EFFECT!
-				this.draftsService.deleteDraft(id);
-				return {
-        	type: 'DELETE_DRAFT',
-        	data: id
-      	}
-			});
+        // FIRE SIDE EFFECT!
+        this.draftsService.deleteDraft(id);
+        return {
+          type: 'DELETE_DRAFT',
+          data: id
+        }
+      });
 
     this.dispatcher.dispatch(deleteDraftAction$);
   }
 
-	heartDraft(heartDraft$) {
+  heartDraft(heartDraft$) {
     const heartDraftAction$ = heartDraft$.map(id => {
-			// FIRE SIDE EFFECT!
-			this.draftsService.heartDraft(id);
-			return {
+      // FIRE SIDE EFFECT!
+      this.draftsService.heartDraft(id);
+      return {
         type: 'HEART_DRAFT',
         data: id
-    	}
-		});
+      }
+    });
 
-		this.dispatcher.dispatch(heartDraftAction$);
+    this.dispatcher.dispatch(heartDraftAction$);
   }
 
   addDraft(addDraft$) {
     const addDraftAction$ = addDraft$.map(draft => {
-			// Convention: action creators are allowed to fire
-			// side effects.
-			// Here we are saving the new draft in localforage.
-			this.draftsService.saveDraft(draft);
-			return {
+      // Convention: action creators are allowed to fire
+      // side effects.
+      // Here we are saving the new draft in localforage.
+      this.draftsService.saveDraft(draft);
+      return {
         type: 'ADD_DRAFT',
         data: draft
-    	}
-		});
+      }
+    });
 
     this.dispatcher.dispatch(addDraftAction$);
   }
 
-	getDrafts(getDrafts$) {
+  getDrafts(getDrafts$) {
     const getDraftsAction$ = getDrafts$.map(action => {
-			// Convention: action creators are allowed to fire
-			// side effects.
-			// Here we are saving the new draft in localforage.
-			this.draftsService.getDrafts();
-			return { type: 'GET_DRAFTS' }
-		});
+      // Convention: action creators are allowed to fire
+      // side effects.
+      // Here we are saving the new draft in localforage.
+      this.draftsService.getDrafts();
+      return { type: 'GET_DRAFTS' }
+    });
 
     this.dispatcher.dispatch(getDraftsAction$);
   }
@@ -85,9 +85,9 @@ export class DraftsActions {
     this.dispatcher.dispatch(receiveDraftsActions$);
   }
 
-	filterHearted(filterHearted$) {
+  filterHearted(filterHearted$) {
     this.dispatcher.dispatch(filterHearted$
       .map(() => ({ type: 'FILTER_HEARTED' }))
-		);
-	}
+    );
+  }
 }
