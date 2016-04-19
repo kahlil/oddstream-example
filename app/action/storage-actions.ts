@@ -7,10 +7,7 @@ export class StorageActions {
   constructor(
     private util: Util,
     private dispatcher: Dispatcher
-  ) {
-    // this.draftsSaved = util.makeActionCreator('draftsSaved');
-    // this.draftsReceived = util.makeActionCreator('draftsReceived');
-  }
+  ) {}
 
   draftsSaved(draftsSaved$) {
     const draftsSavedActions$ = draftsSaved$

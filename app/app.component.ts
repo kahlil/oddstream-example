@@ -7,8 +7,6 @@ import { DraftsListComponent } from './drafts-list.component';
 import { DraftEditorComponent } from './draft-editor.component';
 // Services
 import { DraftsService } from './service/drafts';
-// Factories
-import { Util } from './service/util';
 // Flux
 import { Dispatcher } from './dispatcher/dispatcher';
 import { DraftsActions } from './action/drafts-actions';
@@ -61,7 +59,6 @@ import 'rxjs/add/observable/fromPromise';
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
-    Util,
     DraftsService,
     Dispatcher,
     DraftsActions,
