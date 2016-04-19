@@ -5,7 +5,6 @@ import { findIndex } from 'lodash';
 
 @Injectable()
 export class DraftsService {
-
   constructor(
     @Inject('LocalForage') private storage,
     private storageActions: StorageActions
@@ -23,15 +22,12 @@ export class DraftsService {
   saveDraft(draft: any) {
     this.storage.getItem('drafts').then((drafts) => {
       if (!drafts) drafts = [];
-
       const currentIndex = findIndex(drafts, ['id', draft.id]);
-
       if (currentIndex !== -1) {
         drafts[currentIndex] = draft;
       } else {
         drafts.push(draft);
       }
-
       this.storageActions.draftsSaved(Observable.fromPromise(
         this.storage.setItem(`drafts`, drafts)
       ));
@@ -41,19 +37,17 @@ export class DraftsService {
   heartDraft(id: number) {
     this.storage.getItem('drafts').then((drafts) => {
       const currentIndex = findIndex(drafts, ['id', id]);
-
       drafts[currentIndex].hearted = !drafts[currentIndex].hearted;
-
-      this.storageActions.draftsSaved(Observable.fromPromise(
-        this.storage.setItem(`drafts`, drafts)
-      ));
+      this.storage.setItem(`drafts`, drafts)
     })
   }
 
   getDrafts() {
     this.storageActions.receiveDrafts(Observable
       .fromPromise(this.storage.getItem('drafts'))
-      .map(result => result === null ? [] : result)
+      .map(result => {
+        return result === null ? [] : result
+      })
     );
   }
 }

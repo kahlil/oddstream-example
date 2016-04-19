@@ -20,6 +20,8 @@ export class DraftsEditorStore {
     // parameter. That's why the reducer function is being curried.
     const curriedReducer = actionType => curry(this[camelCase(actionType)]);
 
+    dispatcher$.subscribe(x => console.log(x))
+
     return dispatcher$
       // Convention: the reducer for an action has the same name
       // as the action, just camelcased.
@@ -47,10 +49,10 @@ export class DraftsEditorStore {
   }
 
   openEditor(action, state) {
-    return { isEnsabled: true }
+    return { isEnabled: true }
   }
 
   addDraft(action, state) {
-    return { isEnsabled: false }
+    return { isEnabled: false }
   }
 }

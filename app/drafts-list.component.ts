@@ -34,7 +34,6 @@ import { DraftEditorComponent } from './draft-editor.component';
 })
 export class DraftsListComponent implements OnInit {
   public drafts: any;
-
   deleteDraft$ = new EventEmitter();
   openEditor$ = new EventEmitter();
   heartDraft$ = new EventEmitter();
@@ -49,7 +48,6 @@ export class DraftsListComponent implements OnInit {
   ngOnInit() {
     // Set state from the drafts store.
     this.drafts = this.draftsStore.state$;
-
     // Create delete draft action by passing the
     // deleteDraft clickstream.
     this.draftsActions.deleteDraft(this.deleteDraft$);

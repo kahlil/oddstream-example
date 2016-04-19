@@ -4,15 +4,22 @@ import { Util } from '../service/util';
 
 @Injectable()
 export class StorageActions {
-  public draftsSaved: any;
-  public draftsReceived: any;
-
   constructor(
     private util: Util,
     private dispatcher: Dispatcher
   ) {
-    this.draftsSaved = util.makeActionCreator('draftsSaved');
+    // this.draftsSaved = util.makeActionCreator('draftsSaved');
     // this.draftsReceived = util.makeActionCreator('draftsReceived');
+  }
+
+  draftsSaved(draftsSaved$) {
+    const draftsSavedActions$ = draftsSaved$
+      .map(drafts => ({
+        type: 'RECEIVE_DRAFTS',
+        data: drafts
+      }));
+
+    this.dispatcher.dispatch(draftsSavedActions$);
   }
 
   receiveDrafts(receiveDrafts$) {

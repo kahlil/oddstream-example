@@ -8,6 +8,8 @@ export class Dispatcher {
 
   constructor() {
     this.dispatcher$ = new Subject();
+
+    this.dispatcher$.subscribe(x => console.log('dispatcher', x))
   }
 
   dispatch(action$) {

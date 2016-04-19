@@ -9,7 +9,7 @@ import { DraftsEditorStore } from './store/drafts-editor-store';
 @Component({
   selector: 'draft-editor',
   template: `
-    <div class="draft-editor hidden" [ngClass]="{ enabled: editorState?.isEnsabled }">
+    <div class="draft-editor hidden" [ngClass]="{ enabled: editorState?.isEnabled }">
       <textarea name="textarea" rows="10" cols="50" [(ngModel)]="text"></textarea><br>
       <button class="add-draft-button" (click)="newDraft$.next({ text: text, id: editorState?.newId })">Add Draft</button>
     </div>

@@ -14,7 +14,7 @@ export class DraftsActions {
   openEditor(openEditor$) {
     const openEditorAction$ = openEditor$
       .map((data) => ({
-        type: 'DELETE_DRAFT',
+        type: 'OPEN_EDITOR',
         data
       }));
 
