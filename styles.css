@@ -4558,6 +4558,9 @@ a.bg-danger:focus, a.bg-danger:hover {
   .hidden-print {
     display: none !important; } }
 
+* {
+  box-sizing: border-box; }
+
 body {
   font-family: 'Source Code Pro', sans-serif; }
 
@@ -4567,11 +4570,3 @@ button {
   text-decoration: underline; }
   button:hover {
     text-decoration: none; }
-
-draft-editor {
-  position: absolute;
-  top: 5rem;
-  left: 0;
-  background: white;
-  width: 100%;
-  z-index: 1; }

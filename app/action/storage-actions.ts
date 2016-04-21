@@ -6,22 +6,20 @@ export class StorageActions {
   constructor(private dispatcher: Dispatcher) {}
 
   draftsSaved(draftsSaved$) {
-    const draftsSavedActions$ = draftsSaved$
+    this.dispatcher.dispatch(draftsSaved$
       .map(drafts => ({
         type: 'RECEIVE_DRAFTS',
         data: drafts
-      }));
-
-    this.dispatcher.dispatch(draftsSavedActions$);
+      }))
+    );
   }
 
   receiveDrafts(receiveDrafts$) {
-    const receiveDraftsActions$ = receiveDrafts$
+    this.dispatcher.dispatch(receiveDrafts$
       .map(drafts => ({
         type: 'RECEIVE_DRAFTS',
         data: drafts
-      }));
-
-    this.dispatcher.dispatch(receiveDraftsActions$);
+      }))
+    );
   }
 }

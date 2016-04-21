@@ -1,14 +1,14 @@
 .flex-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .flex-item {
   flex-basis: 20%;
 }
 .draft {
   margin-top: 1rem;
-  padding: 15px 10px 10px 10px;
+  padding: 18px 10px 18px 10px;
   border: 1px solid #ccc;
   margin-right: 1rem;
   position: relative;
@@ -34,7 +34,7 @@
   color: whitesmoke;
   position: absolute;
   bottom: -2px;
-  right: 3px;
+  right: 5px;
 }
 .hearted {
   color: coral;

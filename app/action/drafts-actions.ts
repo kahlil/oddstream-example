@@ -10,17 +10,16 @@ export class DraftsActions {
   ) {}
 
   openEditor(openEditor$) {
-    const openEditorAction$ = openEditor$
+    this.dispatcher.dispatch(openEditor$
       .map((data) => ({
         type: 'OPEN_EDITOR',
         data
-      }));
-
-    this.dispatcher.dispatch(openEditorAction$);
+      }))
+    );
   }
 
   deleteDraft(deleteDraft$) {
-    const deleteDraftAction$ = deleteDraft$
+    this.dispatcher.dispatch(deleteDraft$
       .map((id) => {
         // FIRE SIDE EFFECT!
         this.draftsService.deleteDraft(id);
@@ -28,26 +27,26 @@ export class DraftsActions {
           type: 'DELETE_DRAFT',
           data: id
         }
-      });
-
-    this.dispatcher.dispatch(deleteDraftAction$);
+      })
+    );
   }
 
   heartDraft(heartDraft$) {
-    const heartDraftAction$ = heartDraft$.map(id => {
-      // FIRE SIDE EFFECT!
-      this.draftsService.heartDraft(id);
-      return {
-        type: 'HEART_DRAFT',
-        data: id
-      }
-    });
-
-    this.dispatcher.dispatch(heartDraftAction$);
+    this.dispatcher.dispatch(heartDraft$
+      .map(id => {
+        // FIRE SIDE EFFECT!
+        this.draftsService.heartDraft(id);
+        return {
+          type: 'HEART_DRAFT',
+          data: id
+        }
+      })
+    );
   }
 
   addDraft(addDraft$) {
-    const addDraftAction$ = addDraft$.map(draft => {
+    this.dispatcher.dispatch(addDraft$
+      .map(draft => {
       // Convention: action creators are allowed to fire
       // side effects.
       // Here we are saving the new draft in localforage.
@@ -56,31 +55,28 @@ export class DraftsActions {
         type: 'ADD_DRAFT',
         data: draft
       }
-    });
-
-    this.dispatcher.dispatch(addDraftAction$);
+    }));
   }
 
   getDrafts(getDrafts$) {
-    const getDraftsAction$ = getDrafts$.map(action => {
-      // Convention: action creators are allowed to fire
-      // side effects.
-      // Here we are saving the new draft in localforage.
-      this.draftsService.getDrafts();
-      return { type: 'GET_DRAFTS' }
-    });
-
-    this.dispatcher.dispatch(getDraftsAction$);
+    this.dispatcher.dispatch(getDrafts$
+      .map(action => {
+        // Convention: action creators are allowed to fire
+        // side effects.
+        // Here we are saving the new draft in localforage.
+        this.draftsService.getDrafts();
+        return { type: 'GET_DRAFTS' }
+      })
+    );
   }
 
   receiveDrafts(receiveDrafts$) {
-    const receiveDraftsActions$ = receiveDrafts$
+    this.dispatcher.dispatch(receiveDrafts$
       .map(drafts => ({
         type: 'RECEIVE_DRAFTS',
         data: { drafts }
-      }));
-
-    this.dispatcher.dispatch(receiveDraftsActions$);
+      }))
+    );
   }
 
   filterHearted(filterHearted$) {

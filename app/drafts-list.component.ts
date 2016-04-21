@@ -27,10 +27,7 @@ import { DraftEditorComponent } from './draft-editor.component';
     </div>
   `,
   styleUrls: ['app/drafts-list.component.css'],
-  directives: [
-    DraftEditorComponent,
-    ROUTER_DIRECTIVES
-  ]
+  directives: [ROUTER_DIRECTIVES]
 })
 export class DraftsListComponent implements OnInit {
   public drafts: any;
