@@ -49,16 +49,16 @@ export class DraftsStore {
     return state
       .map(draft => {
         if (draft.id === action.data) {
-          draft.hearted = !draft.hearted;
+          draft.flagged = !draft.flagged;
         }
         return draft;
       });
   }
 
-  filterHearted(action, state) {
+  filterFlagged(action, state) {
     return state
       .map(draft => {
-        if (!draft.hearted) {
+        if (!draft.flagged) {
           draft.hide = !draft.hide;
         }
         return draft;

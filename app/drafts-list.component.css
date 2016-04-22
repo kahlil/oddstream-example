@@ -33,11 +33,17 @@
   cursor: pointer;
   color: whitesmoke;
   position: absolute;
-  bottom: -2px;
-  right: 5px;
+  bottom: 4px;
+  right: 2px;
+  height: 20px;
+  width: 20px;
 }
-.hearted {
-  color: coral;
+.heart:before {
+  content: "✨";
+  opacity: .3;
+}
+.flagged:before {
+  opacity: 1;
 }
 .hide {
   display: none;

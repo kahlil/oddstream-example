@@ -79,9 +79,9 @@ export class DraftsActions {
     );
   }
 
-  filterHearted(filterHearted$) {
-    this.dispatcher.dispatch(filterHearted$
-      .map(() => ({ type: 'FILTER_HEARTED' }))
+  filterFlagged(filterFlagged$) {
+    this.dispatcher.dispatch(filterFlagged$
+      .map(() => ({ type: 'FILTER_FLAGGED' }))
     );
   }
 }

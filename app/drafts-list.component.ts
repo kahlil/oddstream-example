@@ -15,13 +15,13 @@ import { DraftEditorComponent } from './draft-editor.component';
   template: `
     <div class="menu">
       <button (click)="openEditor$.next()">add draft</button>
-      <button (click)="filterHearted$.next()">show hearted</button>
+      <button (click)="filterFlagged$.next()">show sparkled</button>
     </div>
     <div class="flex-container">
         <div *ngFor="#draft of drafts | async" class="draft flex-item" [ngClass]="{ hide: draft?.hide }">
           <span class="delete-draft" (click)="deleteDraft$.next(draft.id)">&times;</span>
           <span class="draft-id">{{draft?.id}}</span>
-          <span class="heart" [ngClass]="{ hearted: draft?.hearted }" (click)="heartDraft$.next(draft.id)">&hearts;</span>
+          <span class="heart" [ngClass]="{ flagged: draft?.flagged }" (click)="heartDraft$.next(draft.id)"></span>
           {{draft?.text}}
         </div>
     </div>
@@ -34,7 +34,7 @@ export class DraftsListComponent implements OnInit {
   deleteDraft$ = new EventEmitter();
   openEditor$ = new EventEmitter();
   heartDraft$ = new EventEmitter();
-  filterHearted$ = new EventEmitter();
+  filterFlagged$ = new EventEmitter();
 
   constructor(
     private draftsActions: DraftsActions,
@@ -52,7 +52,7 @@ export class DraftsListComponent implements OnInit {
     this.draftsActions.openEditor(this.openEditor$);
     // The hearting clickstream.
     this.draftsActions.heartDraft(this.heartDraft$)
-    // The filter hearted drafts click stream.
-    this.draftsActions.filterHearted(this.filterHearted$)
+    // The filter flagged drafts click stream.
+    this.draftsActions.filterFlagged(this.filterFlagged$)
   }
 }
