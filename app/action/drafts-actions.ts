@@ -31,13 +31,13 @@ export class DraftsActions {
     );
   }
 
-  heartDraft(heartDraft$) {
-    this.dispatcher.dispatch(heartDraft$
+  flagDraft(flagDraft$) {
+    this.dispatcher.dispatch(flagDraft$
       .map(id => {
         // FIRE SIDE EFFECT!
-        this.draftsService.heartDraft(id);
+        this.draftsService.flagDraft(id);
         return {
-          type: 'HEART_DRAFT',
+          type: 'FLAG_DRAFT',
           data: id
         }
       })

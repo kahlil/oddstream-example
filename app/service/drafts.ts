@@ -34,7 +34,7 @@ export class DraftsService {
     })
   }
 
-  heartDraft(id: number) {
+  flagDraft(id: number) {
     this.storage.getItem('drafts').then((drafts) => {
       const currentIndex = findIndex(drafts, ['id', id]);
       drafts[currentIndex].flagged = !drafts[currentIndex].flagged;

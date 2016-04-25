@@ -9,19 +9,21 @@ import { DraftsStore } from './store/drafts-store';
 import { DraftsActions } from './action/drafts-actions';
 // Components
 import { DraftEditorComponent } from './draft-editor.component';
+// Helpers
+import { makeObservableFunction } from './util';
 
 @Component({
   selector: 'drafts-list',
   template: `
     <div class="menu">
-      <button (click)="openEditor$.next()">add draft</button>
-      <button (click)="filterFlagged$.next()">show sparkled</button>
+      <button (click)="openEditor()">add draft</button>
+      <button (click)="filterFlagged()">show sparkled</button>
     </div>
     <div class="flex-container">
         <div *ngFor="#draft of drafts | async" class="draft flex-item" [ngClass]="{ hide: draft?.hide }">
-          <span class="delete-draft" (click)="deleteDraft$.next(draft.id)">&times;</span>
+          <span class="delete-draft" (click)="deleteDraft(draft.id)">&times;</span>
           <span class="draft-id">{{draft?.id}}</span>
-          <span class="heart" [ngClass]="{ flagged: draft?.flagged }" (click)="heartDraft$.next(draft.id)"></span>
+          <span class="heart" [ngClass]="{ flagged: draft?.flagged }" (click)="flagDraft(draft.id)"></span>
           {{draft?.text}}
         </div>
     </div>
@@ -31,10 +33,6 @@ import { DraftEditorComponent } from './draft-editor.component';
 })
 export class DraftsListComponent implements OnInit {
   public drafts: any;
-  deleteDraft$ = new EventEmitter();
-  openEditor$ = new EventEmitter();
-  heartDraft$ = new EventEmitter();
-  filterFlagged$ = new EventEmitter();
 
   constructor(
     private draftsActions: DraftsActions,
@@ -46,13 +44,17 @@ export class DraftsListComponent implements OnInit {
     this.drafts = this.draftsStore.state$;
     // Create delete draft action by passing the
     // deleteDraft clickstream.
-    this.draftsActions.deleteDraft(this.deleteDraft$);
+    const deleteDraft$ = makeObservableFunction(this, 'deleteDraft').share();
+    this.draftsActions.deleteDraft(deleteDraft$);
     // Create an open editor action by passing
     // the openEditor clickstream.
-    this.draftsActions.openEditor(this.openEditor$);
+    const openEditor$ = makeObservableFunction(this, 'openEditor').share();
+    this.draftsActions.openEditor(openEditor$);
     // The hearting clickstream.
-    this.draftsActions.heartDraft(this.heartDraft$)
+    const flagDraft$ = makeObservableFunction(this, 'flagDraft').share();
+    this.draftsActions.flagDraft(flagDraft$);
     // The filter flagged drafts click stream.
-    this.draftsActions.filterFlagged(this.filterFlagged$)
+    const filterFlagged$ = makeObservableFunction(this, 'filterFlagged').share();
+    this.draftsActions.filterFlagged(filterFlagged$)
   }
 }

@@ -2,66 +2,25 @@ import { Injectable } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
 import { Observable } from 'rxjs/Observable';
 import { curry, camelCase, last } from 'lodash';
+import { reducers } from './drafts-store-reducers';
+import { makeReducer$ } from '../util';
 
 @Injectable()
 export class DraftsStore {
   public state$: Observable<Object>;
 
   constructor(private dispatcher: Dispatcher) {
-    this.state$ = this.processActions(this.dispatcher.dispatcher$);
-  }
-
-  processActions(dispatcher$) {
-    // In the .map-step we also want to partially apply the action
-    // parameter. That's why the reducer function is being curried.
-    const curriedReducer = actionType => curry(this[camelCase(actionType)]);
-
-    return dispatcher$
-      // Convention: the reducer for an action has the same name
-      // as the action, just camelcased.
-      .filter(action => !!this[camelCase(action.type)])
-      // Map the action to it's redcuer and preload (partially apply)
-      // it with the action parameter.
-      .map(action => curriedReducer(action.type)(action))
-      // We now have a stream of reducers.
-      // Apply them on the state as they come through.
-      .scan((state, reducer) => reducer(state), [])
+    const reducer$ = curry(makeReducer$)(dispatcher.dispatcher$, reducers);
+    this.state$ = Observable
+      .merge(
+        reducer$('DELETE_DRAFT'),
+        reducer$('ADD_DRAFT'),
+        reducer$('RECEIVE_DRAFTS'),
+        reducer$('DRAFTS_SAVED'),
+        reducer$('FLAG_DRAFT'),
+        reducer$('FILTER_FLAGGED')
+      )
+      .scan((state: [{}], reducer) => reducer(state), [])
       .publishReplay(1).refCount();
-  }
-
-  deleteDraft(action, state) {
-    return state.filter(draft => draft.id !== action.data)
-  }
-
-  addDraft(action, state) {
-    return [{ id: action.data.id, text: action.data.text }, ...state];
-  }
-
-  receiveDrafts(action, state) {
-    return [...action.data];
-  }
-
-  draftsSaved(action, state) {
-    return state;
-  }
-
-  heartDraft(action, state) {
-    return state
-      .map(draft => {
-        if (draft.id === action.data) {
-          draft.flagged = !draft.flagged;
-        }
-        return draft;
-      });
-  }
-
-  filterFlagged(action, state) {
-    return state
-      .map(draft => {
-        if (!draft.flagged) {
-          draft.hide = !draft.hide;
-        }
-        return draft;
-      });
   }
 }
