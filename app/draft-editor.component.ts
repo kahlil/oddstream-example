@@ -20,7 +20,6 @@ import { makeObservableFunction } from './util';
   directives: [NgClass]
 })
 export class DraftEditorComponent implements OnInit {
-  // @Output() newDraft$ = new EventEmitter();
   private text: string;
   editorState: Object;
 
