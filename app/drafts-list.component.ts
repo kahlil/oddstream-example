@@ -1,14 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from 'angular2/core';
+import { Component, OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Scheduler } from 'rxjs/Rx';
 // Flux Services
-import { DraftsService } from './service/drafts';
 import { DraftsStore } from './store/drafts-store';
-import { DraftsActions } from './action/drafts-actions';
-// Components
-import { DraftEditorComponent } from './draft-editor.component';
+import { ActionCreator } from './action/action-creator';
 // Helpers
 import { makeObservableFunction } from './util';
 
@@ -35,7 +29,7 @@ export class DraftsListComponent implements OnInit {
   public drafts: any;
 
   constructor(
-    private draftsActions: DraftsActions,
+    private actionCreator: ActionCreator,
     public draftsStore: DraftsStore
   ) {}
 
@@ -45,16 +39,16 @@ export class DraftsListComponent implements OnInit {
     // Create delete draft action by passing the
     // deleteDraft clickstream.
     const deleteDraft$ = makeObservableFunction(this, 'deleteDraft').share();
-    this.draftsActions.deleteDraft(deleteDraft$);
+    this.actionCreator.createAction(deleteDraft$, 'DELETE_DRAFT');
     // Create an open editor action by passing
     // the openEditor clickstream.
     const openEditor$ = makeObservableFunction(this, 'openEditor').share();
-    this.draftsActions.openEditor(openEditor$);
+    this.actionCreator.createAction(openEditor$, 'OPEN_EDITOR');
     // The hearting clickstream.
     const flagDraft$ = makeObservableFunction(this, 'flagDraft').share();
-    this.draftsActions.flagDraft(flagDraft$);
+    this.actionCreator.createAction(flagDraft$, 'FLAG_DRAFT');
     // The filter flagged drafts click stream.
     const filterFlagged$ = makeObservableFunction(this, 'filterFlagged').share();
-    this.draftsActions.filterFlagged(filterFlagged$)
+    this.actionCreator.createAction(filterFlagged$, 'FILTER_FLAGGED');
   }
 }

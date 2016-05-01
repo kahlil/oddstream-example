@@ -1,87 +1,54 @@
-import { Injectable, OnInit } from 'angular2/core';
-import { Dispatcher } from '../dispatcher/dispatcher';
 import { DraftsService } from '../service/drafts';
 
-@Injectable()
-export class DraftsActions {
-  constructor(
-    private dispatcher: Dispatcher,
-    private draftsService: DraftsService
-  ) {}
+export function draftsActions(draftsService: DraftsService) {
+  return {
+    openEditor: data => ({
+      type: 'OPEN_EDITOR',
+      data
+    }),
 
-  openEditor(openEditor$) {
-    this.dispatcher.dispatch(openEditor$
-      .map((data) => ({
-        type: 'OPEN_EDITOR',
-        data
-      }))
-    );
-  }
+    deleteDraft: id => {
+      // FIRE SIDE EFFECT!
+      draftsService.deleteDraft(id);
+      return {
+        type: 'DELETE_DRAFT',
+        data: id
+      };
+    },
 
-  deleteDraft(deleteDraft$) {
-    this.dispatcher.dispatch(deleteDraft$
-      .map((id) => {
-        // FIRE SIDE EFFECT!
-        this.draftsService.deleteDraft(id);
-        return {
-          type: 'DELETE_DRAFT',
-          data: id
-        }
-      })
-    );
-  }
+    flagDraft: id => {
+      // FIRE SIDE EFFECT!
+      draftsService.flagDraft(id);
+      return {
+        type: 'FLAG_DRAFT',
+        data: id
+      };
+    },
 
-  flagDraft(flagDraft$) {
-    this.dispatcher.dispatch(flagDraft$
-      .map(id => {
-        // FIRE SIDE EFFECT!
-        this.draftsService.flagDraft(id);
-        return {
-          type: 'FLAG_DRAFT',
-          data: id
-        }
-      })
-    );
-  }
-
-  addDraft(addDraft$) {
-    this.dispatcher.dispatch(addDraft$
-      .map(draft => {
+    addDraft: draft => {
       // Convention: action creators are allowed to fire
       // side effects.
       // Here we are saving the new draft in localforage.
-      this.draftsService.saveDraft(draft);
+      draftsService.saveDraft(draft);
       return {
         type: 'ADD_DRAFT',
         data: draft
-      }
-    }));
-  }
+      };
+    },
 
-  getDrafts(getDrafts$) {
-    this.dispatcher.dispatch(getDrafts$
-      .map(action => {
-        // Convention: action creators are allowed to fire
-        // side effects.
-        // Here we are saving the new draft in localforage.
-        this.draftsService.getDrafts();
-        return { type: 'GET_DRAFTS' }
-      })
-    );
-  }
+    getDrafts: action => {
+      // Convention: action creators are allowed to fire
+      // side effects.
+      // Here we are saving the new draft in localforage.
+      draftsService.getDrafts();
+      return { type: 'GET_DRAFTS' };
+    },
 
-  receiveDrafts(receiveDrafts$) {
-    this.dispatcher.dispatch(receiveDrafts$
-      .map(drafts => ({
-        type: 'RECEIVE_DRAFTS',
-        data: { drafts }
-      }))
-    );
-  }
+    receiveDrafts: drafts => ({
+      type: 'RECEIVE_DRAFTS',
+      data: { drafts }
+    }),
 
-  filterFlagged(filterFlagged$) {
-    this.dispatcher.dispatch(filterFlagged$
-      .map(() => ({ type: 'FILTER_FLAGGED' }))
-    );
-  }
+    filterFlagged: () => ({ type: 'FILTER_FLAGGED' })
+  };
 }

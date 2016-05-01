@@ -1,12 +1,24 @@
 // import { SimpleChange } from 'angular2/core';
 import { Observable, Observer } from 'rxjs/Rx';
-import { curry, camelCase, last } from 'lodash';
+import { curry, camelCase } from 'lodash';
 
-export function makeReducer$(dispatcher$: Observable<{ type: string }>, reducers: Object, actionType: string) {
-  const mapReducer = action => curry(reducers[camelCase(action.type)])(action);
+export function makeStateStream(dispatcher$: Observable<{ type: string }>, reducers: Object) {
+  const getReducer = actionType => reducers[camelCase(actionType)];
+  const mapReducer = action => curry(getReducer(action.type))(action);
+
   return dispatcher$
-    .filter(action => action.type === actionType)
-    .map(mapReducer);
+    .filter(action => !!getReducer(action.type))
+    .map(mapReducer)
+    .scan((state: [{}], reducer) => reducer(state), [])
+    .publishReplay(1).refCount();
+}
+
+export function mapToActionCreator(stream, actions, actionType) {
+  const actionCreator = actions[camelCase(actionType)];
+  if (actionCreator === undefined) {
+    throw new Error('No action creator defined for this action.');
+  }
+  return stream.map(actionCreator);
 }
 
 export function makeObservableFunction<T>(target: any, functionName: string) {
@@ -23,6 +35,6 @@ export function makeObservableFunction<T>(target: any, functionName: string) {
             }
             observer.next(args);
         }
-    }
+    };
     return observable;
 }
