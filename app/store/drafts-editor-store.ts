@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
 import { DraftsStore } from './drafts-store';
 import { Observable } from 'rxjs/Observable';
-import { curry, camelCase, last } from 'lodash';
+import { curry, camelCase } from 'lodash';
 
 @Injectable()
 export class DraftsEditorStore {
@@ -33,7 +33,7 @@ export class DraftsEditorStore {
       .combineLatest(drafts$, (editorState, drafts) => {
         const highestId = drafts.reduce((acc, draft) => {
           if (draft.id > acc) {
-            return draft.id
+            return draft.id;
           } else {
             return acc;
           }
@@ -47,10 +47,10 @@ export class DraftsEditorStore {
   }
 
   openEditor(action, state) {
-    return { isEnabled: true }
+    return { isEnabled: true };
   }
 
   addDraft(action, state) {
-    return { isEnabled: false }
+    return { isEnabled: false };
   }
 }

@@ -1,6 +1,6 @@
 export const reducers = {
   deleteDraft(action, state) {
-    return state.filter(draft => draft.id !== action.data)
+    return state.filter(draft => draft.id !== action.data);
   },
 
   addDraft(action, state) {
@@ -34,4 +34,4 @@ export const reducers = {
         return draft;
       });
   }
-}
+};
