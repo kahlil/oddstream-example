@@ -7,11 +7,11 @@ import { DraftEditorComponent } from './draft-editor.component';
 // Services
 import { DraftsService } from './service/drafts';
 // Flux
-import { ActionCreator } from './action/action-creator';
-import { draftsActions } from './action/drafts-actions';
+import { DraftsActions } from './action/drafts-actions';
 import { StorageActions } from './action/storage-actions';
 import { DraftsStore } from './store/drafts-store';
 import { DraftsEditorStore } from './store/drafts-editor-store';
+import { Odds } from './odds';
 // Libs
 import localforage from 'localforage';
 
@@ -38,12 +38,9 @@ import localforage from 'localforage';
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
-    provide('DraftsActions', {
-      useFactory: draftsActions,
-      deps: [DraftsService]
-    }),
+    provide(Odds, { useValue: new Odds() }),
     DraftsService,
-    ActionCreator,
+    DraftsActions,
     StorageActions,
     DraftsStore,
     DraftsEditorStore,
@@ -54,10 +51,11 @@ import localforage from 'localforage';
 export class AppComponent implements OnInit {
   constructor(
     private draftsStore: DraftsStore,
-    private actionCreator: ActionCreator
+    private draftsActions: DraftsActions,
+    private odds: Odds
   ) {}
 
   ngOnInit() {
-    this.actionCreator.createAction(Observable.of(['GET_DRAFTS']), 'GET_DRAFTS');
+    this.draftsActions.fireActionWithGetDraftsEffect(Observable.of(['GET_DRAFTS']), 'GET_DRAFTS');
   }
 }

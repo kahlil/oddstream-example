@@ -1,25 +1,13 @@
-import { Injectable, Inject } from 'angular2/core';
+import { Injectable } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
+import { mapToActionCreator } from '../util';
+import { storageActionCreators } from './storage-action-creators';
 
 @Injectable()
 export class StorageActions {
   constructor(private dispatcher: Dispatcher) {}
 
-  draftsSaved(draftsSaved$) {
-    this.dispatcher.dispatch(draftsSaved$
-      .map(drafts => ({
-        type: 'RECEIVE_DRAFTS',
-        data: drafts
-      }))
-    );
-  }
-
-  receiveDrafts(receiveDrafts$) {
-    this.dispatcher.dispatch(receiveDrafts$
-      .map(drafts => ({
-        type: 'RECEIVE_DRAFTS',
-        data: drafts
-      }))
-    );
+  fireAction(stream, actionType) {
+    this.dispatcher.dispatch(mapToActionCreator(stream, storageActionCreators, actionType));
   }
 }

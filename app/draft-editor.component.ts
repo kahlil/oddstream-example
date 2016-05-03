@@ -1,7 +1,7 @@
 import { Component, OnInit } from 'angular2/core';
 import { NgClass } from 'angular2/common';
 // import { DraftsService } from './service/drafts.service';
-import { ActionCreator } from './action/action-creator';
+import { DraftsActions } from './action/drafts-actions';
 import { DraftsEditorStore } from './store/drafts-editor-store';
 // Helper
 import { makeObservableFunction } from './util';
@@ -22,14 +22,14 @@ export class DraftEditorComponent implements OnInit {
   editorState: Object;
 
   constructor(
-    private actionCreator: ActionCreator,
+    private draftsActions: DraftsActions,
     private draftsEditorStore: DraftsEditorStore
   ) {}
 
   ngOnInit() {
     this.draftsEditorStore.state$.subscribe(state => this.editorState = state);
     const addDraft$ = makeObservableFunction(this, 'newDraft').share();
-    this.actionCreator.createAction(addDraft$, 'ADD_DRAFT');
+    this.draftsActions.fireActionWithAddDraftEffect(addDraft$, 'ADD_DRAFT');
     addDraft$.subscribe(() => this.text = '');
   }
 }

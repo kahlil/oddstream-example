@@ -1,54 +1,39 @@
+import { Injectable } from 'angular2/core';
+import { Dispatcher } from '../dispatcher/dispatcher';
+import { Odds } from '../odds';
+import { mapToActionCreator } from '../util';
 import { DraftsService } from '../service/drafts';
+import { actionCreators } from './drafts-action-creators';
 
-export function draftsActions(draftsService: DraftsService) {
-  return {
-    openEditor: data => ({
-      type: 'OPEN_EDITOR',
-      data
-    }),
+@Injectable()
+export class DraftsActions {
+  constructor(
+    private dispatcher: Dispatcher,
+    private odds: Odds,
+    private draftsService: DraftsService
+  ) {}
 
-    deleteDraft: id => {
-      // FIRE SIDE EFFECT!
-      draftsService.deleteDraft(id);
-      return {
-        type: 'DELETE_DRAFT',
-        data: id
-      };
-    },
+  fireAction(stream, actionType) {
+    this.dispatcher.dispatch(mapToActionCreator(stream, actionCreators, actionType));
+  }
 
-    flagDraft: id => {
-      // FIRE SIDE EFFECT!
-      draftsService.flagDraft(id);
-      return {
-        type: 'FLAG_DRAFT',
-        data: id
-      };
-    },
+  fireActionWithDeleteDraftEffect(stream, actionType) {
+    const streamWithFx = stream.do(id => this.draftsService.deleteDraft(id));
+    this.fireAction(streamWithFx, actionType);
+  }
 
-    addDraft: draft => {
-      // Convention: action creators are allowed to fire
-      // side effects.
-      // Here we are saving the new draft in localforage.
-      draftsService.saveDraft(draft);
-      return {
-        type: 'ADD_DRAFT',
-        data: draft
-      };
-    },
+  fireActionWithAddDraftEffect(stream, actionType) {
+    const streamWithFx = stream.do(draft => this.draftsService.saveDraft(draft));
+    this.fireAction(streamWithFx, actionType);
+  }
 
-    getDrafts: action => {
-      // Convention: action creators are allowed to fire
-      // side effects.
-      // Here we are saving the new draft in localforage.
-      draftsService.getDrafts();
-      return { type: 'GET_DRAFTS' };
-    },
+  fireActionWithFlagDraftEffect(stream, actionType) {
+    const streamWithFx = stream.do(id => this.draftsService.flagDraft(id));
+    this.fireAction(streamWithFx, actionType);
+  }
 
-    receiveDrafts: drafts => ({
-      type: 'RECEIVE_DRAFTS',
-      data: { drafts }
-    }),
-
-    filterFlagged: () => ({ type: 'FILTER_FLAGGED' })
-  };
+  fireActionWithGetDraftsEffect(stream, actionType) {
+    const streamWithFx = stream.do(() => this.draftsService.getDrafts());
+    this.fireAction(streamWithFx, actionType);
+  }
 }
