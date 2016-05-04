@@ -10,8 +10,8 @@ export class Odds {
   dispatch(action$) {
     action$.subscribe(
       res => this.dispatcher$.next(res),
-      error => console.error('🔥', error),
-      () => console.log('a completed event has been sent')
+      error => console.error('🔥', error)
+      // () => console.log('a completed event has been sent')
     );
   }
 
@@ -22,17 +22,16 @@ export class Odds {
   makeStateStream(reducers) {
     const getReducer = actionType => reducers[camelCase(actionType)];
     const mapReducer = action => curry(getReducer(action.type))(action);
-
     return this.dispatcher$
       .filter(action => !!getReducer(action.type))
       .map(mapReducer)
-      .scan((state: [{}], reducer) => reducer(state), [])
+      .scan((state: [{}], reducer: (state: [{}]) => [{}]) => reducer(state), [])
       .publishReplay(1).refCount();
   }
 
   mapToActionCreator(stream, actions, actionType) {
     const actionCreator = actions[camelCase(actionType)];
-    if (actionCreator === undefined) {
+    if (!!actionCreator === false) {
       throw new Error('No action creator defined for this action.');
     }
     return stream.map(actionCreator);

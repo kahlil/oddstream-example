@@ -1,7 +1,6 @@
 import { Injectable } from 'angular2/core';
 import { Dispatcher } from '../dispatcher/dispatcher';
 import { Odds } from '../odds';
-import { mapToActionCreator } from '../util';
 import { DraftsService } from '../service/drafts';
 import { actionCreators } from './drafts-action-creators';
 
@@ -14,7 +13,7 @@ export class DraftsActions {
   ) {}
 
   fireAction(stream, actionType) {
-    this.dispatcher.dispatch(mapToActionCreator(stream, actionCreators, actionType));
+    this.odds.dispatch(this.odds.mapToActionCreator(stream, actionCreators, actionType));
   }
 
   fireActionWithDeleteDraftEffect(stream, actionType) {
