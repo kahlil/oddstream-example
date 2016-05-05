@@ -23,7 +23,7 @@ export const actionCreators = {
 
   receiveDrafts: drafts => ({
     type: 'RECEIVE_DRAFTS',
-    data: { drafts }
+    data: drafts
   }),
 
   filterFlagged: () => ({ type: 'FILTER_FLAGGED' })

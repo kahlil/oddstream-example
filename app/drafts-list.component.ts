@@ -1,7 +1,7 @@
 import { Component, OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 // Flux Services
-import { DraftsStore } from './store/drafts-store';
+import { Store } from './store/store';
 import { DraftsActions } from './action/drafts-actions';
 // Helpers
 import { makeObservableFunction } from './util';
@@ -30,25 +30,26 @@ export class DraftsListComponent implements OnInit {
 
   constructor(
     private draftsActions: DraftsActions,
-    public draftsStore: DraftsStore
+    public store: Store
   ) {}
 
   ngOnInit() {
     // Set state from the drafts store.
-    this.drafts = this.draftsStore.state$;
+    this.drafts = this.store.draftsState$;
+
     // Create delete draft action by passing the
     // deleteDraft clickstream.
     const deleteDraft$ = makeObservableFunction(this, 'deleteDraft').share();
-    this.draftsActions.fireActionWithDeleteDraftEffect(deleteDraft$, 'DELETE_DRAFT');
+    this.draftsActions.dispatchAction(deleteDraft$, 'DELETE_DRAFT');
     // Create an open editor action by passing
     // the openEditor clickstream.
     const openEditor$ = makeObservableFunction(this, 'openEditor').share();
-    this.draftsActions.fireAction(openEditor$, 'OPEN_EDITOR');
+    this.draftsActions.dispatchAction(openEditor$, 'OPEN_EDITOR');
     // The hearting clickstream.
     const flagDraft$ = makeObservableFunction(this, 'flagDraft').share();
-    this.draftsActions.fireActionWithFlagDraftEffect(flagDraft$, 'FLAG_DRAFT');
+    this.draftsActions.dispatchAction(flagDraft$, 'FLAG_DRAFT');
     // The filter flagged drafts click stream.
     const filterFlagged$ = makeObservableFunction(this, 'filterFlagged').share();
-    this.draftsActions.fireAction(filterFlagged$, 'FILTER_FLAGGED');
+    this.draftsActions.dispatchAction(filterFlagged$, 'FILTER_FLAGGED');
   }
 }

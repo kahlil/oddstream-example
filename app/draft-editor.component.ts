@@ -2,7 +2,7 @@ import { Component, OnInit } from 'angular2/core';
 import { NgClass } from 'angular2/common';
 // import { DraftsService } from './service/drafts.service';
 import { DraftsActions } from './action/drafts-actions';
-import { DraftsEditorStore } from './store/drafts-editor-store';
+import { Store } from './store/store';
 // Helper
 import { makeObservableFunction } from './util';
 
@@ -23,13 +23,16 @@ export class DraftEditorComponent implements OnInit {
 
   constructor(
     private draftsActions: DraftsActions,
-    private draftsEditorStore: DraftsEditorStore
+    private store: Store
   ) {}
 
   ngOnInit() {
-    this.draftsEditorStore.state$.subscribe(state => this.editorState = state);
+    // Receive state stream from store and pass the values to the template.
+    this.store.draftsEditorState$.subscribe(state => this.editorState = state);
+
+    // Create action stream from the user sending the send button.
     const addDraft$ = makeObservableFunction(this, 'newDraft').share();
-    this.draftsActions.fireActionWithAddDraftEffect(addDraft$, 'ADD_DRAFT');
+    this.draftsActions.dispatchAction(addDraft$, 'ADD_DRAFT');
     addDraft$.subscribe(() => this.text = '');
   }
 }

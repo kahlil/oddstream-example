@@ -1,6 +1,5 @@
 import { bootstrap }    from 'angular2/platform/browser';
 import { AppComponent } from './app.component';
-import { Dispatcher } from './dispatcher/dispatcher';
 // Rx operators
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
@@ -21,4 +20,4 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/observable/fromArray';
 import 'rxjs/add/observable/fromPromise';
 
-bootstrap(AppComponent, [Dispatcher]);
+bootstrap(AppComponent);

@@ -1,38 +1,38 @@
 import { Injectable } from 'angular2/core';
-import { Dispatcher } from '../dispatcher/dispatcher';
 import { Odds } from '../odds';
 import { DraftsService } from '../service/drafts';
-import { actionCreators } from './drafts-action-creators';
 
 @Injectable()
 export class DraftsActions {
   constructor(
-    private dispatcher: Dispatcher,
     private odds: Odds,
     private draftsService: DraftsService
   ) {}
 
-  fireAction(stream, actionType) {
-    this.odds.dispatch(this.odds.mapToActionCreator(stream, actionCreators, actionType));
+  dispatchAction(stream, actionType) {
+    const streamWithOrWithoutFx = this.addSideEffects(stream, actionType);
+    this.odds.dispatch(streamWithOrWithoutFx, actionType);
   }
 
-  fireActionWithDeleteDraftEffect(stream, actionType) {
-    const streamWithFx = stream.do(id => this.draftsService.deleteDraft(id));
-    this.fireAction(streamWithFx, actionType);
-  }
-
-  fireActionWithAddDraftEffect(stream, actionType) {
-    const streamWithFx = stream.do(draft => this.draftsService.saveDraft(draft));
-    this.fireAction(streamWithFx, actionType);
-  }
-
-  fireActionWithFlagDraftEffect(stream, actionType) {
-    const streamWithFx = stream.do(id => this.draftsService.flagDraft(id));
-    this.fireAction(streamWithFx, actionType);
-  }
-
-  fireActionWithGetDraftsEffect(stream, actionType) {
-    const streamWithFx = stream.do(() => this.draftsService.getDrafts());
-    this.fireAction(streamWithFx, actionType);
+  addSideEffects(stream, actionType) {
+    let streamUpdated;
+    switch (actionType) {
+      case 'DELETE_DRAFT':
+        streamUpdated = stream.do(id => this.draftsService.deleteDraft(id));
+        break;
+      case 'ADD_DRAFT':
+        streamUpdated = stream.do(draft => this.draftsService.saveDraft(draft));
+        break;
+      case 'FLAG_DRAFT':
+        streamUpdated = stream.do(id => this.draftsService.flagDraft(id));
+        break;
+      case 'GET_DRAFTS':
+        streamUpdated = stream.do(id => this.draftsService.getDrafts());
+        break;
+      default:
+        streamUpdated = stream;
+        break;
+    }
+    return streamUpdated;
   }
 }

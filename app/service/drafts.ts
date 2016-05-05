@@ -13,7 +13,7 @@ export class DraftsService {
   deleteDraft(id: any) {
     this.storage.getItem('drafts').then((drafts) => {
       const newDrafts = drafts.filter(d => d.id !== id);
-      this.storageActions.fireAction(Observable.fromPromise(
+      this.storageActions.dispatchAction(Observable.fromPromise(
         this.storage.setItem(`drafts`, newDrafts)
       ), 'RECEIVE_DRAFTS');
     });
@@ -30,7 +30,7 @@ export class DraftsService {
       } else {
         drafts.unshift(draft);
       }
-      this.storageActions.fireAction(Observable.fromPromise(
+      this.storageActions.dispatchAction(Observable.fromPromise(
         this.storage.setItem(`drafts`, drafts)
       ), 'RECEIVE_DRAFTS');
     });
@@ -45,7 +45,7 @@ export class DraftsService {
   }
 
   getDrafts() {
-    this.storageActions.fireAction(Observable
+    this.storageActions.dispatchAction(Observable
       .fromPromise(this.storage.getItem('drafts'))
       .map(result => result === null ? [] : result),
       'RECEIVE_DRAFTS'

@@ -3,20 +3,22 @@ import { curry, camelCase } from 'lodash';
 
 export class Odds {
   public dispatcher$: Subject<{ type: string }>;
-  constructor() {
+  private actionCreators: any;
+
+  constructor(actionCreators) {
+    this.actionCreators = actionCreators;
     this.dispatcher$ = new Subject();
   }
 
-  dispatch(action$) {
-    action$.subscribe(
-      res => this.dispatcher$.next(res),
-      error => console.error('🔥', error)
-      // () => console.log('a completed event has been sent')
-    );
+  dispatch(action$, actionType) {
+    const actionCreator$ = this.mapToActionCreator(action$, actionType);
+    const nextFn = data => this.dispatcher$.next(data);
+    const errorFn = error => console.error('🔥', error);
+    actionCreator$.subscribe(nextFn, errorFn);
   }
 
-  createAction(stream, actions, actionType) {
-    this.dispatch(this.mapToActionCreator(stream, actions, actionType));
+  createAction(stream, actionType) {
+    this.dispatch(stream, actionType);
   }
 
   makeStateStream(reducers) {
@@ -29,10 +31,10 @@ export class Odds {
       .publishReplay(1).refCount();
   }
 
-  mapToActionCreator(stream, actions, actionType) {
-    const actionCreator = actions[camelCase(actionType)];
+  mapToActionCreator(stream, actionType) {
+    const actionCreator = this.actionCreators[camelCase(actionType)];
     if (!!actionCreator === false) {
-      throw new Error('No action creator defined for this action.');
+      throw new Error(`No action creator defined for this action: ${actionType}`);
     }
     return stream.map(actionCreator);
   }
