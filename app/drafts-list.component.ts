@@ -1,8 +1,10 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 // Flux Services
 import { Store } from './store/store';
-import { DraftsActions } from './action/drafts-actions';
+// import { DraftsActions } from './action/drafts-actions';
+import { Odds } from './odds';
 // Helpers
 import { makeObservableFunction } from './util';
 
@@ -29,8 +31,9 @@ export class DraftsListComponent implements OnInit {
   public drafts: any;
 
   constructor(
-    private draftsActions: DraftsActions,
-    public store: Store
+    // private draftsActions: DraftsActions,
+    public store: Store,
+    private odds: Odds
   ) {}
 
   ngOnInit() {
@@ -40,16 +43,20 @@ export class DraftsListComponent implements OnInit {
     // Create delete draft action by passing the
     // deleteDraft clickstream.
     const deleteDraft$ = makeObservableFunction(this, 'deleteDraft').share();
-    this.draftsActions.dispatchAction(deleteDraft$, 'DELETE_DRAFT');
+    this.odds.dispatch(deleteDraft$, 'DELETE_DRAFT');
     // Create an open editor action by passing
     // the openEditor clickstream.
     const openEditor$ = makeObservableFunction(this, 'openEditor').share();
-    this.draftsActions.dispatchAction(openEditor$, 'OPEN_EDITOR');
+    this.odds.dispatch(openEditor$, 'OPEN_EDITOR');
     // The hearting clickstream.
     const flagDraft$ = makeObservableFunction(this, 'flagDraft').share();
-    this.draftsActions.dispatchAction(flagDraft$, 'FLAG_DRAFT');
+    this.odds.dispatch(flagDraft$, 'FLAG_DRAFT');
     // The filter flagged drafts click stream.
     const filterFlagged$ = makeObservableFunction(this, 'filterFlagged').share();
-    this.draftsActions.dispatchAction(filterFlagged$, 'FILTER_FLAGGED');
+    this.odds.dispatch(filterFlagged$, 'FILTER_FLAGGED');
+
+    // Get initial data.
+    // const stream = this.effects.addEffects(Observable.of(['GET_DRAFTS']), 'GET_DRAFTS');
+    this.odds.dispatch(Observable.of(['GET_DRAFTS']), 'GET_DRAFTS');
   }
 }

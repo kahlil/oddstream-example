@@ -1,11 +1,14 @@
+import { Injectable } from 'angular2/core';
 import { Subject } from 'rxjs/Subject';
 import { curry, camelCase } from 'lodash';
+import { actionCreators } from './action/action-creators';
 
+@Injectable()
 export class Odds {
   public dispatcher$: Subject<{ type: string }>;
   private actionCreators: any;
 
-  constructor(actionCreators) {
+  constructor() {
     this.actionCreators = actionCreators;
     this.dispatcher$ = new Subject();
   }
@@ -15,10 +18,6 @@ export class Odds {
     const nextFn = data => this.dispatcher$.next(data);
     const errorFn = error => console.error('🔥', error);
     actionCreator$.subscribe(nextFn, errorFn);
-  }
-
-  createAction(stream, actionType) {
-    this.dispatch(stream, actionType);
   }
 
   makeStateStream(reducers) {
@@ -37,5 +36,9 @@ export class Odds {
       throw new Error(`No action creator defined for this action: ${actionType}`);
     }
     return stream.map(actionCreator);
+  }
+
+  getDispatcher$() {
+    return this.dispatcher$;
   }
 }

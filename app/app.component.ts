@@ -1,15 +1,16 @@
 import { Component, provide, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-import { Observable } from 'rxjs/Observable';
+// import { Observable } from 'rxjs/Observable';
 // Components
 import { DraftsListComponent } from './drafts-list.component';
 import { DraftEditorComponent } from './draft-editor.component';
 // Services
 import { DraftsService } from './service/drafts';
 // Flux
-import { DraftsActions } from './action/drafts-actions';
-import { StorageActions } from './action/storage-actions';
-import { actionCreators } from './action/action-creators';
+// import { DraftsActions } from './action/drafts-actions';
+// import { StorageActions } from './action/storage-actions';
+// import { actionCreators } from './action/action-creators';
+import { Effects } from './effects';
 import { Store } from './store/store';
 import { Odds } from './odds';
 
@@ -39,22 +40,18 @@ import localforage from 'localforage';
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
-    provide(Odds, { useValue: new Odds(actionCreators) }),
+    Odds,
     DraftsService,
-    DraftsActions,
-    StorageActions,
     Store,
+    Effects,
     ROUTER_PROVIDERS,
   ]
 })
 @RouteConfig([{ path: '/', component: DraftsListComponent, name: 'DraftsList' }])
 export class AppComponent implements OnInit {
-  constructor(
-    private draftsActions: DraftsActions,
-    private odds: Odds
-  ) {}
+  constructor(private effects: Effects) {}
 
   ngOnInit() {
-    this.draftsActions.dispatchAction(Observable.of(['GET_DRAFTS']), 'GET_DRAFTS');
+    this.effects.runEffects();
   }
 }
