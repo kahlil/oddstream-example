@@ -2,14 +2,14 @@ import { Injectable } from 'angular2/core';
 import { Observable } from 'rxjs/Observable';
 import { draftsReducers } from './drafts-reducers';
 import { draftsEditorReducers } from './drafts-editor-reducers';
-import { Odds } from '../odds';
+import { OddStream } from '..oddstream';
 
 @Injectable()
 export class Store {
   public draftsState$: Observable<Object>;
   public draftsEditorState$: Observable<Object>;
 
-  constructor(private odds: Odds) {
+  constructor(private odds: OddStream) {
     // Create the state stream for the drafts list.
     this.draftsState$ = odds.makeStateStream(draftsReducers);
 

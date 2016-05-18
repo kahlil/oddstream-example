@@ -1,11 +1,11 @@
 import { Component, OnInit } from 'angular2/core';
 import { NgClass } from 'angular2/common';
-// import { DraftsService } from './service/drafts.service';
-// import { DraftsActions } from './action/drafts-actions';
-import { Odds } from './odds';
+// Flux
+import { OddStream } from '.oddstream';
 import { Store } from './store/store';
 // Helper
 import { makeObservableFunction } from './util';
+import { ADD_DRAFT } from './action/action-constants';
 
 @Component({
   selector: 'draft-editor',
@@ -25,7 +25,7 @@ export class DraftEditorComponent implements OnInit {
   constructor(
     // private draftsActions: DraftsActions,
     private store: Store,
-    private odds: Odds
+    private odds: OddStream
   ) {}
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class DraftEditorComponent implements OnInit {
 
     // Create action stream from the user sending the send button.
     const addDraft$ = makeObservableFunction(this, 'newDraft').share();
-    this.odds.dispatch(addDraft$, 'ADD_DRAFT');
+    this.odds.dispatch(addDraft$, ADD_DRAFT);
     addDraft$.subscribe(() => this.text = '');
   }
 }

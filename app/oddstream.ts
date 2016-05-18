@@ -4,7 +4,7 @@ import { curry, camelCase } from 'lodash';
 import { actionCreators } from './action/action-creators';
 
 @Injectable()
-export class Odds {
+export class OddStream {
   public dispatcher$: Subject<{ type: string }>;
   private actionCreators: any;
 

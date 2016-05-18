@@ -1,18 +1,14 @@
 import { Component, provide, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
-// import { Observable } from 'rxjs/Observable';
 // Components
 import { DraftsListComponent } from './drafts-list.component';
 import { DraftEditorComponent } from './draft-editor.component';
 // Services
 import { DraftsService } from './service/drafts';
 // Flux
-// import { DraftsActions } from './action/drafts-actions';
-// import { StorageActions } from './action/storage-actions';
-// import { actionCreators } from './action/action-creators';
 import { Effects } from './effects';
 import { Store } from './store/store';
-import { Odds } from './odds';
+import { OddStream } from '.oddstream';
 
 // Libs
 import localforage from 'localforage';
@@ -40,7 +36,7 @@ import localforage from 'localforage';
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
-    Odds,
+    OddStream,
     DraftsService,
     Store,
     Effects,
