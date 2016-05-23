@@ -1,7 +1,6 @@
 import { Injectable } from 'angular2/core';
 import { Subject } from 'rxjs/Subject';
 import { curry, camelCase } from 'lodash';
-import { actionCreators } from './action/action-creators';
 
 @Injectable()
 export class OddStream {
@@ -9,7 +8,6 @@ export class OddStream {
   private actionCreators: any;
 
   constructor() {
-    this.actionCreators = actionCreators;
     this.dispatcher$ = new Subject();
   }
 
@@ -36,6 +34,10 @@ export class OddStream {
       throw new Error(`No action creator defined for this action: ${actionType}`);
     }
     return stream.map(actionCreator);
+  }
+
+  setActionCreators(actionCreators) {
+    this.actionCreators = actionCreators;
   }
 
   getDispatcher$() {

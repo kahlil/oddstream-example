@@ -8,8 +8,8 @@ import { DraftsService } from './service/drafts';
 // Flux
 import { Effects } from './effects';
 import { Store } from './store/store';
-import { OddStream } from '.oddstream';
-
+import { OddStream } from './oddstream';
+import { actionCreators } from './action/action-creators';
 // Libs
 import localforage from 'localforage';
 
@@ -45,9 +45,13 @@ import localforage from 'localforage';
 })
 @RouteConfig([{ path: '/', component: DraftsListComponent, name: 'DraftsList' }])
 export class AppComponent implements OnInit {
-  constructor(private effects: Effects) {}
+  constructor(
+    private effects: Effects,
+    private oddStream: OddStream
+  ) {}
 
   ngOnInit() {
+    this.oddStream.setActionCreators(actionCreators);
     this.effects.runEffects();
   }
 }

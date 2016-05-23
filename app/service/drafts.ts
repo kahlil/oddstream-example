@@ -1,7 +1,7 @@
 import { Injectable, Inject } from 'angular2/core';
 import { Observable } from 'rxjs/Observable';
 import { findIndex } from 'lodash';
-import { OddStream } from '..oddstream';
+import { OddStream } from '../oddstream';
 import { RECEIVE_DRAFTS } from '../action/action-constants';
 
 @Injectable()

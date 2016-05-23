@@ -1,7 +1,7 @@
 import { Component, OnInit } from 'angular2/core';
 import { NgClass } from 'angular2/common';
 // Flux
-import { OddStream } from '.oddstream';
+import { OddStream } from './oddstream';
 import { Store } from './store/store';
 // Helper
 import { makeObservableFunction } from './util';
