@@ -1,6 +1,6 @@
 import { Injectable } from 'angular2/core';
 import { DraftsService } from './service/drafts';
-import { OddStream } from '.oddstream';
+import { OddStream } from './oddstream';
 import { DELETE_DRAFT, FLAG_DRAFT, ADD_DRAFT, GET_DRAFTS } from './action/action-constants';
 
 @Injectable()

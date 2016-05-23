@@ -2,7 +2,7 @@ import { Injectable } from 'angular2/core';
 import { Observable } from 'rxjs/Observable';
 import { draftsReducers } from './drafts-reducers';
 import { draftsEditorReducers } from './drafts-editor-reducers';
-import { OddStream } from '..oddstream';
+import { OddStream } from '../oddstream';
 
 @Injectable()
 export class Store {

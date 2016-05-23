@@ -3,7 +3,7 @@ import { Component, OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 // Flux Services
 import { Store } from './store/store';
-import { OddStream } from '.oddstream';
+import { OddStream } from './oddstream';
 // Helpers
 import { makeObservableFunction } from './util';
 // Action Constants

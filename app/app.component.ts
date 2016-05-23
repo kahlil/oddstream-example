@@ -8,7 +8,7 @@ import { DraftsService } from './service/drafts';
 // Flux
 import { Effects } from './effects';
 import { Store } from './store/store';
-import { OddStream } from '.oddstream';
+import { OddStream } from './oddstream';
 
 // Libs
 import localforage from 'localforage';
