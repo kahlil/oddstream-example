@@ -1,17 +1,19 @@
-import { Injectable } from 'angular2/core';
+import { Injectable, OnInit } from 'angular2/core';
 import { DraftsService } from './service/drafts';
 import { OddStream } from './oddstream';
 import { DELETE_DRAFT, FLAG_DRAFT, ADD_DRAFT, GET_DRAFTS } from './action/action-constants';
 
 @Injectable()
-export class Effects {
+export class Effects implements OnInit {
   dispatcher$;
 
   constructor(
     private draftsService: DraftsService,
     private odds: OddStream
-  ) {
-    this.dispatcher$ = odds.getDispatcher$();
+  ) {}
+
+  ngOnInit() {
+    this.dispatcher$ = this.odds.getDispatcher$();
   }
 
   runEffects() {
