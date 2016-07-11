@@ -1,5 +1,7 @@
-import { Component, provide, OnInit } from 'angular2/core';
+import { Component, provide, Inject, OnInit } from 'angular2/core';
 import { RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS } from 'angular2/router';
+import OddStream from 'oddstream';
+
 // Components
 import { DraftsListComponent } from './drafts-list.component';
 import { DraftEditorComponent } from './draft-editor.component';
@@ -8,7 +10,6 @@ import { DraftsService } from './service/drafts';
 // Flux
 import { Effects } from './effects';
 import { Store } from './store/store';
-import { OddStream } from './oddstream';
 import { actionCreators } from './action/action-creators';
 // Libs
 import localforage from 'localforage';
@@ -36,7 +37,7 @@ import localforage from 'localforage';
   directives: [DraftEditorComponent, ROUTER_DIRECTIVES],
   providers: [
     provide('LocalForage', { useValue: localforage }),
-    OddStream,
+    provide('OddStream', { useValue: new OddStream() }),
     DraftsService,
     Store,
     Effects,
@@ -47,10 +48,11 @@ import localforage from 'localforage';
 export class AppComponent implements OnInit {
   constructor(
     private effects: Effects,
-    private oddStream: OddStream
+    @Inject('OddStream') private oddStream
   ) {}
 
   ngOnInit() {
+    console.log('OddStream', this.oddStream);
     this.oddStream.setActionCreators(actionCreators);
     this.effects.runEffects();
   }

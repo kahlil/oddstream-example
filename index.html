@@ -30,7 +30,9 @@
         },
         paths: {
           lodash: './node_modules/lodash/lodash.js',
-          localforage: './node_modules/localforage/dist/localforage.js'
+          'lodash.*': './node_modules/lodash.*/index.js',
+          localforage: './node_modules/localforage/dist/localforage.js',
+          oddstream: './node_modules/oddstream/index.js',
         }
       });
       // System.import('app/main')

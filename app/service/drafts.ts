@@ -1,20 +1,19 @@
 import { Injectable, Inject } from 'angular2/core';
 import { Observable } from 'rxjs/Observable';
 import { findIndex } from 'lodash';
-import { OddStream } from '../oddstream';
 import { RECEIVE_DRAFTS } from '../action/action-constants';
 
 @Injectable()
 export class DraftsService {
   constructor(
     @Inject('LocalForage') private storage,
-    private odds: OddStream
+    @Inject('OddStream') private oddStream
   ) {}
 
   deleteDraft(id: any) {
     this.storage.getItem('drafts').then((drafts) => {
       const newDrafts = drafts.filter(d => d.id !== id);
-      this.odds.dispatch(Observable.fromPromise(
+      this.oddStream.dispatch(Observable.fromPromise(
         this.storage.setItem(`drafts`, newDrafts)
       ), RECEIVE_DRAFTS);
     });
@@ -31,7 +30,7 @@ export class DraftsService {
       } else {
         drafts.unshift(draft);
       }
-      this.odds.dispatch(Observable.fromPromise(
+      this.oddStream.dispatch(Observable.fromPromise(
         this.storage.setItem(`drafts`, drafts)
       ), RECEIVE_DRAFTS);
     });
@@ -46,7 +45,7 @@ export class DraftsService {
   }
 
   getDrafts() {
-    this.odds.dispatch(Observable
+    this.oddStream.dispatch(Observable
       .fromPromise(this.storage.getItem('drafts'))
       .map(result => result === null ? [] : result),
       RECEIVE_DRAFTS
